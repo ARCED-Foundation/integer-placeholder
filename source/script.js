@@ -4,18 +4,17 @@ var isAndroid = (document.body.className.indexOf("android-collect") >= 0);
 var isIOS = (document.body.className.indexOf("ios-collect") >= 0);
 
 // Find the input element
-var input = document.getElementById('text-field');
+var input = document.getElementById('integer-field');
 const textvalue = getPluginParameter('text');
 input.placeholder = textvalue;
-
 
 // Restricts input for the given textbox to the given inputFilter.
 function setInputFilter(textbox, inputFilter) {
     function restrictInput() {
         if (inputFilter(this.value)) {
+            this.oldValue = this.value;
             this.oldSelectionStart = this.selectionStart;
             this.oldSelectionEnd = this.selectionEnd;
-            this.oldValue = this.value;
         } else if (this.hasOwnProperty("oldValue")) {
             this.value = this.oldValue;
             this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
@@ -34,18 +33,61 @@ function setInputFilter(textbox, inputFilter) {
     textbox.addEventListener("drop", restrictInput);
 }
 
-// If the field label or hint contain any HTML that isn't in the form definition, then the < and > characters will have been replaced by their HTML character entities, and the HTML won't render. We need to turn those HTML entities back to actual < and > characters so that the HTML renders properly. This will allow you to render HTML from field references in your field label or hint.
-function unEntity(str){
-    return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-}
-if (fieldProperties.LABEL) {
-    document.querySelector(".label").innerHTML = unEntity(fieldProperties.LABEL);
-}
-if (fieldProperties.HINT) {
-    document.querySelector(".hint").innerHTML = unEntity(fieldProperties.HINT);
-}
+// If the field is not marked readonly, then restrict input to integer only.
+if(!fieldProperties.READONLY) {
 
+    // Set/remove the "inputmode".
+    function setInputMode(attributeValue) {
+        if (attributeValue === null) {
+            input.removeAttribute("inputmode");
+        } else {
+            input.setAttribute("inputmode", attributeValue);
+        }
+    }
 
+    // For iOS, we'll default the inputmode to "numeric", unless some specific value is
+    // passed as plug-in parameter.
+    if (isIOS) {
+        var inputModeIOS = getPluginParameter("inputmode-ios");
+        if (inputModeIOS === undefined) {
+            inputModeIOS = "numeric";
+        }
+        setInputMode(inputModeIOS);
+    }
+    // For Android, we'll default the inputmode to "decimal" (as defined in the template.html) file,
+    // unless some specific value is passed as plug-in parameter.
+    else if (isAndroid) {
+        var inputModeAndroid = getPluginParameter("inputmode-android");
+        if (inputModeAndroid !== undefined) {
+            setInputMode(inputModeAndroid);
+        }
+    }
+    // For WebCollect, we'll default the inputmode to "decimal" (as defined in the template.html) file,
+    // unless some specific value is passed as plug-in parameter.
+    else if(isWebCollect) {
+        var inputModeWebCollect = getPluginParameter("inputmode-web");
+        if (inputModeWebCollect !== undefined) {
+            setInputMode(inputModeWebCollect);
+        }
+    }
+
+    setInputFilter(input, function (value) {
+        // Empty value.
+        if (value === "" || value === "-") {
+            return true;
+        }
+
+        // Only allow digits to be entered.
+        // A negative sign at the beginning is also allowed.
+        var isValidInteger = /^-?\d*$/.test(value);
+        if (isValidInteger) {
+            var integer = parseInt(value, 10);
+            isValidInteger = (integer >= -999999999 && integer <= 999999999); // match our existing limits for integer values.
+        }
+
+        return isValidInteger;
+    });
+}
 
 // Define what happens when the user attempts to clear the response
 function clearAnswer() {
@@ -64,58 +106,16 @@ function setFocus() {
 
 // Save the user's response (update the current answer)
 input.oninput = function() {
-    setAnswer(input.value);
+    setAnswer(input.value === "-" ? "" : input.value);
+};
+
+// If the field label or hint contain any HTML that isn't in the form definition, then the < and > characters will have been replaced by their HTML character entities, and the HTML won't render. We need to turn those HTML entities back to actual < and > characters so that the HTML renders properly. This will allow you to render HTML from field references in your field label or hint.
+function unEntity(str){
+    return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 }
-
-// check for standard appearance options and apply them
-if ( fieldProperties.APPEARANCE.includes("numbers_phone") === true ) {
-    input.type = "tel";
-} else if ( fieldProperties.APPEARANCE.includes("numbers_decimal") === true ) {
-    input.pattern = "[0-9]*";
-
-    // Set/remove the "inputmode".
-    function setInputMode(attributeValue) {
-        if (attributeValue === null) {
-            input.removeAttribute("inputmode");
-        } else {
-            input.setAttribute("inputmode", attributeValue);
-        }
-    }
-
-    setInputMode("numeric");
-
-    // For iOS, we'll default the inputmode to "numeric" (as defined above), unless some specific value is
-    // passed as plug-in parameter.
-    if (isIOS) {
-        var inputModeIOS = getPluginParameter("inputmode-ios");
-        if (inputModeIOS !== undefined) {
-            setInputMode(inputModeIOS);
-        }
-    }
-    // For Android, we'll default the inputmode to "numeric" (as defined above),
-    // unless some specific value is passed as plug-in parameter.
-    else if (isAndroid) {
-        var inputModeAndroid = getPluginParameter("inputmode-android");
-        if (inputModeAndroid !== undefined) {
-            setInputMode(inputModeAndroid);
-        }
-    }
-    // For WebCollect, we'll default the inputmode to "numeric" (as defined above),
-    // unless some specific value is passed as plug-in parameter.
-    else if(isWebCollect) {
-        var inputModeWebCollect = getPluginParameter("inputmode-web");
-        if (inputModeWebCollect !== undefined) {
-            setInputMode(inputModeWebCollect);
-        }
-    }
-
-    // If the field is not marked as readonly, then restrict input to decimal only.
-    if(!fieldProperties.READONLY) {
-        setInputFilter(input, function (value) {
-            return /^-?\d*[.,]?\d*$/.test(value);
-        });
-    }
-
-} else if ( fieldProperties.APPEARANCE.includes("numbers") === true ) {
-    input.type = "number";
-} 
+if (fieldProperties.LABEL) {
+    document.querySelector(".label").innerHTML = unEntity(fieldProperties.LABEL);
+}
+if (fieldProperties.HINT) {
+    document.querySelector(".hint").innerHTML = unEntity(fieldProperties.HINT);
+}

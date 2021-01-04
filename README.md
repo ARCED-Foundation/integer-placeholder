@@ -1,4 +1,4 @@
-# text-placeholder
+# integer-placeholder
 
 ![Download now](extras/preview-images/Placeholder-text.jpg)  ![Download now](extras/preview-images/Placeholder-text-dynamic.jpg) 
 
@@ -6,18 +6,18 @@
 
 |<img src="extras/preview-images/Placeholder-text.jpg" width="100px">|
 |:---:|
-|Customized text inside placeholder of text type field|
+|Customized text inside placeholder of integer type field|
 
 ## Description
 
-Use this field plug-in to use customized text in the placeholder of text type field.
+Use this field plug-in to use customized text in the placeholder of integer type field.
 
-For this field plug-in, enter the text for the `text` parameter (see **Parameters** below), and that text will be shown into the field's placeholder. It can only be used with text field type.
+For this field plug-in, enter the text for the `text` parameter (see **Parameters** below), and that text will be shown into the field's placeholder. It can only be used with integer field type.
 
-This plug-in was developed based on the [baseline-text](https://github.com/surveycto/baseline-text/blob/master/README.md) field-plug-in, therefore, also supports the additional improvements in the [baseline-text](https://github.com/surveycto/baseline-text/blob/master/README.md) field-plug-in.
+This plug-in was developed based on the [baseline-integer](https://github.com/surveycto/baseline-integer/blob/master/README.md) field-plug-in, therefore, also supports the additional improvements in the [baseline-integer](https://github.com/surveycto/baseline-integer/blob/master/README.md) field-plug-in.
 
 
-[![Download now](extras/preview-images/download-button.png)](https://github.com/ARCED-Foundation/text-placeholder/raw/main/text-placeholder.fieldplugin.zip)
+[![Download now](extras/preview-images/download-button.png)](https://github.com/ARCED-Foundation/integer-placeholder/raw/main/integer-placeholder.fieldplugin.zip)
 
 ## Default SurveyCTO feature support
 
@@ -38,7 +38,7 @@ This plug-in was developed based on the [baseline-text](https://github.com/surve
 
 ## How to use
 
-**To use this field plug-in as-is**, just download the [text-placeholder.fieldplugin.zip](text-placeholder.fieldplugin.zip) file from this repo, and attach it to your form.
+**To use this field plug-in as-is**, just download the [integer-placeholder.fieldplugin.zip](integer-placeholder.fieldplugin.zip) file from this repo, and attach it to your form.
 
 To create your own field plug-in using this as a template, follow these steps:
 
@@ -53,9 +53,9 @@ To create your own field plug-in using this as a template, follow these steps:
 
 ## Parameters
 
-There is one parameter, `text`, which is the custom text. The following example can be used in *appearance* for a text field:
+There is one parameter, `text`, which is the custom text. The following example can be used in *appearance* for a integer field:
 
-    custom-text-placeholder(text='Please write the full name')
+    custom-integer-placeholder(text='Please write the age in full year')
 
 ## More resources
 

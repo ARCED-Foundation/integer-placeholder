@@ -1,8 +1,8 @@
 {
-	"name" : "Placeholder text field",
-	"author" : "Mehrab Ali",
+	"name" : "Placeholder integer field",
+	"author" : "Mehrab Ali and Tasmin Binta Mamun",
 	"version": "1.0.0",
-	"supportedFieldTypes": ["text"],
+	"supportedFieldTypes": ["integer"],
 	"hideDefaultRequiredMessage": false,
 	"hideDefaultConstraintMessage": false
 }
