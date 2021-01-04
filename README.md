@@ -23,17 +23,15 @@ This plug-in was developed based on the [baseline-integer](https://github.com/su
 
 | Feature / Property | Support |
 | --- | --- |
-| Supported field type(s) | `text`|
+| Supported field type(s) | `integer`|
 | Default values | Yes |
-| Custom constraint message | Uses default behavior |
-| Custom required message | Uses default behavior |
-| Read only | Yes (shows the current value, if present) |
+| Constraint message | Uses default behavior |
+| Required message | Uses default behavior |
+| Read only | Yes *(shows the current value, if present)* |
 | media:image | Yes |
 | media:audio | Yes |
 | media:video | Yes |
-| `number` appearance | Yes |
-| `numbers_decimal` appearance | Yes |
-| `numbers_phone` appearance | Yes |
+| `show-formatted` appearance | No |
 
 
 ## How to use
