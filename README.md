@@ -1,7 +1,6 @@
 # integer-placeholder
 
-![Download now](extras/preview-images/Placeholder-integer-dynamic.jpg)  ![Download now](extras/preview-images/Placeholder-integer-dynamic.jpg) 
-
+![Download now](extras/preview-images/Placeholder-integer-dynamic.jpg)
 
 
 |<img src="extras/preview-images/Placeholder-integer-dynamic.jpg" width="100px">|
